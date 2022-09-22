@@ -1,0 +1,56 @@
+.interface{
+    width: calc(100% - 300px);
+    
+
+    .nav{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 50px;
+        background-color: #fff;
+        .left{
+            .search-bar{
+                
+                svg{
+                    position: absolute;
+                    margin: 8px -14px; 
+                    font-size: 20px;
+                }
+                & input {
+                    width: 300px;
+                    border: none;
+                    background: none;
+                    padding: 5px 20px;
+                    outline-width: 0;
+                    background-color: transparent;
+                    resize: none;
+                    outline: none;
+                    &::placeholder {
+                        // margin: 30px;
+                    }
+                   
+                }
+            }
+        }
+
+        .profile{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            svg{
+                font-size: 20px;
+                margin-right: 12px;
+            }
+            img{
+                margin-right: 12px;
+                border-radius: 50%;
+            }
+            p{
+              font-size: 14px;
+              margin-top: 15px;  
+              cursor: pointer;
+            }
+        }
+    }
+
+}

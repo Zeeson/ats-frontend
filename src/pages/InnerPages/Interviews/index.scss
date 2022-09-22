@@ -1,0 +1,45 @@
+.upcoming{
+        background: #FFFFFF;
+        box-shadow: 0px 3.5px 5.5px rgba(0, 0, 0, 0.02);
+        border-radius: 15px;
+
+    .time-box {
+        background: #EBEFF2;
+        border-radius: 5px;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 14px;
+        /* identical to box height */
+        letter-spacing: 0.01em;
+        color: #696969;
+    }
+    
+    .time-title {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 17px;
+        /* identical to box height */
+    
+        letter-spacing: 0.01em;
+    
+        color: #484747;
+    }
+    
+    .main-btn {
+        background: #2383BD;
+        border-radius: 3px;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 14px;
+        align-items: center;
+        text-align: center;
+        color: #FFFFFF;
+    }
+    .main-btn:hover {
+        background: #2383BD!important;
+        border-radius: 3px;
+        color: #FFFFFF!important;
+    }
+}

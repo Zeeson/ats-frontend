@@ -1,0 +1,175 @@
+
+// Interview Schedule
+.interview-modal{
+    margin-top: 30px;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 570px;
+    height: 362px;
+
+
+    .modal-content  {
+        -webkit-border-radius: 0px !important;
+        -moz-border-radius: 0px !important;
+        border: 0px solid white;
+    }
+
+  .close{
+    text-align: right;
+    float: right;
+    cursor: pointer;
+    svg{
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+     h2{
+        // padding: 20px 0;
+        margin-top: -20px;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 21px;
+        color: #484747;
+     }
+
+    p{
+        font-family: 'Rubik';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        display: flex;
+        align-items: center;
+        color: #696969;
+    }
+
+    input{
+        width: 200px;
+        height: 38px;
+        border: 1px solid #C4C4C4;
+        border-radius: 3px;
+        padding: 20px;
+    }
+    .interview-schedule{
+            display: grid;
+            margin-top: 20px;
+
+            .left_input{
+              display: flex;
+              justify-content: space-between;
+
+                .time{
+                  margin-right: 20px;
+                  margin-bottom: 20px;
+                    input{
+                        width: 238px;
+                        height: 38px;
+                        border: 1px solid #C4C4C4;
+                        border-radius: 3px;
+                    }
+                    .time-picker{
+                        svg{
+                            position: absolute;
+                            margin: 12px 210px;
+                            font-size: 20px;
+                        }
+                        .picker{
+                            background-color: #FFFFFF;
+                        }
+                    }
+                }
+
+                .date{
+                    input{
+                        width: 238px;
+                        height: 38px;
+                        border: 1px solid #C4C4C4;
+                        border-radius: 3px;
+                    }
+                    .date-picker{
+                        svg{
+                            position: absolute;
+                            margin: 12px 210px;
+                            font-size: 20px;
+                        }
+                        .minute{
+                          position: absolute;
+                          margin: 12px 210px;
+                          font-size: 20px;
+                        }
+                        border-radius: 3px;
+                    }
+                }
+            }
+            .period{
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+
+                .duration{
+                  .duration-input{
+                    .minute{
+                      position: absolute;
+                      margin: 12px 170px;
+                      // font-size: 16px;
+                    }
+                    input{
+                        width: 238px;
+                        height: 38px;
+                        border: 1px solid #C4C4C4;
+                        border-radius: 3px;
+
+                    }
+                    input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                      -webkit-appearance: none;
+                      margin: 0;
+                    }
+                  }
+
+                }
+
+                .timezone{
+                    max-height: 28px !important;
+                    .react-select__value-container{
+                        width: 238px;
+                        height: 40px;
+                        box-shadow: none;
+                        border-radius: 3px;
+                    }
+                        .react-select-container{
+                            width: 238px;
+                            border-radius: 3px;
+                            box-shadow: none;
+                        }
+
+
+                }
+            }
+        }
+    }
+
+.bottom{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+
+  button{
+    border-radius: 2px;
+    width: 116.15px;
+    height: 29px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 15px;
+    color: #FFFFFF;
+  }
+
+  .cancel{
+    background: #FF5B79;
+  }
+
+  .save{
+    background: #2383BD;
+  }
+}

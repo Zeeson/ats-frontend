@@ -11,23 +11,41 @@ export function PageProvider({ children }) {
   const [appointmentState, setAppointmentState] = useState({})
   const [startDate, setStartDate] = useState(new Date());
   const [appointmentSubmit,  setAppointSubmit] = useState()
+  const [slotArray, setSlotArray] = useState([])
+  // Modal open state
+  const [slotModal, setSlotModal] = useState(false);
+  // Toggle for Modal
+	const toggle = () => setSlotModal(!slotModal);
 
-  const [appointmentForm, setAppointmentForm] = useState(
-    {
-    candidate_id:4,
-    job_role_id:4,
+  const initialForm = {
+    candidate_id:23,
+    job_role_id:2,
     title:"",
     description:"",
-    time:'10:00',
-    date:'09/14/2022',
-    duration:30,
-    timezone:'',
-    created_by:4,
-    slots:[]
-  }
+    time:"10:00",
+    date:"2022-09-21",
+    duration:0,
+    timezone:"UTC",
+    created_by:7,
+    slots:[
+        {
+            date:"2022-09-10",
+            time:"10:00",
+            timezone:"UTC",
+            duration:30
+        }
+    ]
+}
 
-)
+const [appointmentForm, setAppointmentForm] = useState(initialForm)
+const [slotEditForm, setSlotEditForm] = useState({
+  date:"",
+  time:"",
+  timezone:"",
+  duration:0
+})
 
+const [slotEditData, setSlotEditData] = useState()
 
 
   return (
@@ -50,7 +68,17 @@ export function PageProvider({ children }) {
         startDate,
         setStartDate,
         appointmentSubmit,
-        setAppointSubmit
+        setAppointSubmit,
+        slotArray,
+        setSlotArray,
+        initialForm,
+        slotModal,
+        setSlotModal,
+        toggle,
+        slotEditForm,
+        setSlotEditForm,
+        slotEditData,
+        setSlotEditData
       }}>
       {children}
     </PageContext.Provider>

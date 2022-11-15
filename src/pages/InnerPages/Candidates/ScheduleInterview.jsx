@@ -13,12 +13,21 @@ import TimezoneSelect from 'react-timezone-select';
 import DurationPicker from 'react-duration-picker';
 import { TimeDurationInput } from 'react-time-duration-input'
 import useApi from "../../../hooks/apiHook"
+import moment from "moment";
+
 
 const Schedule = ({setCandidatePage}) => {
     const [timeSlot, setTimeSlot] = useState("main")
     const [saveButton, setSaveButton] = useState("true")
     const [time, setTime] = useState('10:00');
-    const [ period, setPeriod ] = useState(1)
+    const [period, setPeriod] = useState(1)
+    const [slotForm, setSlotForm] = useState({
+      id:1,
+      date:"",
+      time:"",
+      timezone:"",
+      duration:0
+    })
 
     const {
         slots,
@@ -30,7 +39,12 @@ const Schedule = ({setCandidatePage}) => {
         appointmentState,
         setAppointmentState,
         startDate,
-        setStartDate
+        setStartDate,
+        slotArray,
+        setSlotArray,
+        initialForm,
+        slotModal,
+        setSlotModal,
        } = useContext(PageContext)
 
        const{
@@ -41,48 +55,136 @@ const Schedule = ({setCandidatePage}) => {
        const handleInputChange = (event) => {
          const { name, value } = event.target;
          setAppointmentForm({ ...appointmentForm, [name]: value });
+         setSlotForm({
+           ...slotForm,
+           duration: value
+         });
+
        };
 
-       const handleTimeZoneChange = () => {
+       const handleTimeZoneChange = (zone) => {
+         setSelectedTimezone(zone)
          setAppointmentForm({
           ...appointmentForm,
-          timezone: {selectedTimezone}
+          timezone: {...selectedTimezone, zone}
         })
        }
 
-       const handleDateChange = (date) => {
-         setStartDate(date)
-         setAppointmentForm({
-          ...appointmentForm,
-          date: startDate
-        })
-       }
 
-       const handleTimeChange = (timeValue) => {
-         setTime(timeValue)
-         setAppointmentForm({
-          ...appointmentForm,
-          time: time
-        })
-       }
+       // const handleDateChange = (date) => {
+       //   setStartDate(date)
+       //   setAppointmentForm({
+       //    ...appointmentForm,
+       //    date: startDate
+       //  })
+       // }
+
+       // const handleTimeChange = (timeValue) => {
+       //   setTime(timeValue)
+       //   setAppointmentForm({
+       //    ...appointmentForm,
+       //    time: time
+       //  })
+       // }
 
        const submitFormData = (e) => {
           e.preventDefault();
           if(handleCreateAppointment(appointmentForm)){
             console.log("=====SUCCESS========");
+            setSlotArray([]);
+            setAppointmentForm(initialForm)
+            setCandidatePage("interview")
           };
         };
 
         console.log(appointmentForm)
         console.log(appointmentData)
 
-        const saveTimeSlots = () => {
-          setSlots(current => [{
-              id: 1,
-              Item: <Slot />,
-          }, ...current]);
+        const saveSlotArray = () => {
+          setSlotArray([...slotArray, slotForm])
+          setAppointmentForm({
+            ...appointmentForm,
+            slots:[...slotArray, slotForm],
+          })
+        }
+        console.log(slotArray)
+
+        const removeSlot = (index) => {
+          setSlotArray(slotArray.filter((el, i) => i !== index))
+        }
+
+        const handleSlotChange = (e) => {
+          setAppointmentForm({
+            ...appointmentForm,
+            slots:[...slotArray, slotArray],
+          })
         };
-        console.log(slots)
+
+        const dateChange = (date) => {
+          setStartDate(date)
+          setSlotForm({
+            ...slotForm,
+            date: moment(date).format("L")
+          });
+          // toISOString() 2022-10-10 plus time
+
+          setAppointmentForm({
+           ...appointmentForm,
+           date: date
+         })
+
+        };
+
+      console.log(slotForm)
+
+        const timeChange = (timeValue) => {
+          setTime(timeValue)
+          setSlotForm({
+            ...slotForm,
+            time: timeValue,
+          });
+
+          setAppointmentForm({
+           ...appointmentForm,
+           time: timeValue
+         })
+        };
+
+        const timeZoneChange = (zone) => {
+          setSelectedTimezone(zone)
+          setSlotForm({
+            ...slotForm,
+            timezone: zone.abbrev
+          });
+
+         setAppointmentForm({
+          ...appointmentForm,
+          timezone: zone
+        })
+
+        };
+
+        const saveZoneToForm = () => {
+            setAppointmentForm({
+              ...appointmentForm,
+              timezone: slotForm.timezone,
+              date: slotForm.date
+            })
+        }
+        // const durationChange = (e) => {
+        //   setSlotForm({
+        //     ...slotForm,
+        //     duration: e,
+        //   });
+        // };
+
+        // const saveTimeSlots = () => {
+        //   setSlots(current => [{
+        //       id: 1,
+        //       Item: <Slot />,
+        //   }, ...current]);
+        // };
+        // console.log(slots)
 
         const style = {
             control: (base) => ({
@@ -94,16 +196,11 @@ const Schedule = ({setCandidatePage}) => {
             })
         }
 
-        // useEffect(() => {
-        //   if(appointmentData?.data){
-        //
-        //   }
-        // }, [appointmentData?.data])
-
         if(appointmentData.loading) return <div> Loading... </div>
         if(!appointmentData.loading && appointmentData.error) return <div>An error</div>
-        if(!appointmentData.loading && !appointmentData.error){
-          setCandidatePage("interview")
+        if(appointmentData?.data?.results && !appointmentData.error){
+          // setCandidatePage("interview")
+
         }
 
     return (
@@ -135,14 +232,13 @@ const Schedule = ({setCandidatePage}) => {
                     <div className='time-date'>
                         <div className='time'>
                             <p>Time</p>
-                            {/* <input type='text' placeholder='Select Time' /> */}
                             <div className='time-picker'>
                             <BiTime />
                             <TimePicker
                                 id="picker"
                                 placeHolder
                                 name="time"
-                                onChange={handleTimeChange}
+                                onChange={timeChange}
                                 value={appointmentForm.time}
                             />
 
@@ -157,7 +253,9 @@ const Schedule = ({setCandidatePage}) => {
                                 name="date"
                                 value={appointmentForm.date}
                                 selected={startDate}
-                                onChange={handleDateChange} />
+                                onChange={dateChange}
+                                dateFormat='yyyy-MM-dd'
+                                />
                             </div>
                         </div>
                     </div>
@@ -174,9 +272,6 @@ const Schedule = ({setCandidatePage}) => {
                               placeholder='Minutes'
                               />
                             </div>
-
-                            {/*<TimeDurationInput  className="form-control" scale="h" value={period} onChange={setPeriod} />*/}
-
                         </div>
                         <div className='timezone'>
                             <p>Time Zone</p>
@@ -186,7 +281,7 @@ const Schedule = ({setCandidatePage}) => {
                                 className="react-select-container"
                                 classNamePrefix="react-select"
                                 value={appointmentForm.timezone}
-                                onChange={handleTimeZoneChange}
+                                onChange={timeZoneChange}
                                 styles={style}
                             />
                         </div>
@@ -196,9 +291,10 @@ const Schedule = ({setCandidatePage}) => {
                         <button
                         onClick={(() => {
                           setTimeSlot("slots");
-                          saveTimeSlots();
-                          setSaveButton("false")
-                          setAppointmentState(appointmentForm)
+                          setSaveButton("false");
+                          saveSlotArray();
+                          saveZoneToForm();
+                          // setAppointmentState(appointmentForm);
                         })}
                         className='save-button'
                         >
@@ -225,6 +321,7 @@ const Schedule = ({setCandidatePage}) => {
                             <p className='img-text'>No Interview Date Scheduled Yet</p>
                         </div>
                         <button
+                          className=""
                         >
                             SEND INVITE
                         </button>
@@ -235,6 +332,10 @@ const Schedule = ({setCandidatePage}) => {
                          <TimeSlot
                            submitFormData={submitFormData}
                            appointmentData={appointmentData}
+                           removeSlot={removeSlot}
+                           setTimeSlot={setTimeSlot}
+                           slotModal={slotModal}
+                           setSlotModal={setSlotModal}
                            />
                     </div>
                     }

@@ -6,38 +6,73 @@ import { BiEdit, BiTime } from 'react-icons/bi'
 import { MdOutlineDateRange} from 'react-icons/md'
 import { GiDuration} from 'react-icons/gi'
 import "./index.scss"
+import moment from "moment";
+import SlotEdit from "../../../components/Modals/SlotEditModal"
 
-const Slot = () => {
+import {
+	Button, Modal, ModalFooter,
+	ModalHeader, ModalBody
+} from "reactstrap"
+
+const Slot = ({
+  slot,
+  removeSlot,
+  slotModal,
+  setSlotModal,
+}) => {
 
   const {
     slots,
     setSlots,
     appointmentState,
-    setAppointmentState
+    setAppointmentState,
+    slotArray,
+    setSlotArray,
+    toggle,
+		slotForm,
+		slotEditForm,
+		setSlotEditForm,
+		setSlotEditData
    } = useContext(PageContext)
 
    const handleRemove = (index) => {
-    slots.splice(index, 1);
+    slotArray.splice(index, 1);
   };
 
-  useEffect(() => {
-    if(slots){
-        setSlots(state => state.filter(suggested => suggested.id !== slots.id && true))
-    }
-  }, [slots]);
+
+const updateSlotState = () => {
+  if(slotArray){
+      setSlotArray(state => state.filter(slot => slot.id !== slotArray.id && true))
+  }
+}
+
+console.log("------------=====+++++")
+console.log(slotArray)
+// useEffect(() => {
+//
+// }, [slotArray])
 
     return (
-        <div className='slot'>
+      <section className="slot-container">
+        {slotArray.map((slot, index) => (
+        <div key={index} className='slot'>
             <div className='top-title'>
-                <p>Time Slot 1</p>
+                <p>Time Slot {index + 1}</p>
                 <div className='edit'>
                     <RiDeleteBinLine
                     onClick={(() => {
                         handleRemove()
+                        updateSlotState()
                     })}
                     className='delete'
                     />
-                    <BiEdit />
+                    <BiEdit
+											onClick={(() => {
+				                setSlotEditData(slot)
+												toggle()
+												console.log(slot.id)
+				              })}
+                      />
                 </div>
             </div>
             <div className='content'>
@@ -46,14 +81,14 @@ const Slot = () => {
                         <MdOutlineDateRange />
                         <div className='date-text'>
                             <p>Date</p>
-                            <p className='capital'>{appointmentState?.date}</p>
+                            <p className='capital'>{moment(slot?.date).format("MMMM Do YYYY")}</p>
                         </div>
                     </div>
-                    <div className='time'>
+                    <div className='time time-items'>
                         <BiTime />
                         <div className='date-text'>
                             <p>Time</p>
-                            <p className='capital'>{appointmentState?.time}</p>
+                            <p className='capital'>{slot?.time}</p>
                         </div>
                     </div>
                 </div>
@@ -62,19 +97,22 @@ const Slot = () => {
                         <MdOutlineDateRange />
                         <div className='date-text'>
                             <p>Time Zone</p>
-                            <p>{appointmentState?.timezone}</p>
+                            <p>{slot?.timezone}</p>
                         </div>
                     </div>
                     <div className='time duration'>
                         <GiDuration />
                         <div className='date-text'>
                             <p>Duration</p>
-                            <p>{appointmentState?.duration}</p>
+                            <p>{slot?.duration} Minutes</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+          ))}
+          <SlotEdit />
+      </section>
     );
 }
 

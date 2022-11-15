@@ -34,8 +34,8 @@ useEffect(() => {
   if(appointmentData.data){
     console.log("SUCCESS POST")
     // setAppointSubmit(appointmentData.data)
+    // window.location.reload()
   }
-
 }, [appointmentData.data])
 
 return{
